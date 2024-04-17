@@ -1,3 +1,9 @@
+'use client'
+
+import React, { useState } from "react";
+
+import "./styles.scss";
+
 export default function Home() {
   return (
     <main>
