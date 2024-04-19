@@ -18,6 +18,14 @@ export default function Home() {
     }
   }, [backgroundPosition, position]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPosition(5000);
+      setBackgroundPosition(5000);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [position, backgroundPosition]);
+
   const spin = () => {
     setPosition(position - 5000);
   }
