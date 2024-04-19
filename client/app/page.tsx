@@ -10,8 +10,9 @@ export default function Home() {
 
   useEffect(() => {
     if (backgroundPosition > position) {
+      const decrement = backgroundPosition <= 500 ? 20 : 100;
       const timer = setTimeout(() => {
-        setBackgroundPosition(backgroundPosition - 100);
+        setBackgroundPosition(backgroundPosition - decrement);
       }, 100);
       return () => clearTimeout(timer);
     }
