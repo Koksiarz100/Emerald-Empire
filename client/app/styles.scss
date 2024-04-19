@@ -18,13 +18,13 @@ main {
       background-repeat: repeat-x;
       transition: all 0.5s ease;
       transition-behavior: smooth;
-      border: 2px solid red;
+      border: 2px solid gray;
       border-radius: 10px;
 
       .roulette-arrow {
         width: 5px;
         height: 128px;
-        background-color: red;
+        background-color: gray;
         border-radius: 50%;
         position: absolute;
         left: 50%;

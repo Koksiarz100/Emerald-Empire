@@ -56,7 +56,6 @@ export default function Home() {
             {rouletteTimer/1000} seconds
           </div>
         </div>
-        <button className="test-button" onClick={() => spin()}>Spin</button>
       </div>
     </main>
   );
