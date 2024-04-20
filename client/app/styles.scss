@@ -48,6 +48,53 @@ main {
       }
     }
 
+    .roulette-options {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+
+      .roulette-input > input {
+        width: 200px;
+        height: 30px;
+        background: none;
+        border: 1px solid white;
+        color: white;
+        font-size: 1.1rem;
+        text-align: center;
+        margin: 0 10px 0 10px;
+      }
+
+      .roulette-buttons {
+        margin-top: 20px;
+
+        .roulette-option {
+          background: none;
+          width: 100px;
+          height: 30px;
+          background: none;
+          border: 1px solid white;
+          color: white;
+          font-size: 1.1rem;
+          margin: 0 10px 0 10px;
+          cursor: pointer;
+        }
+  
+        .red {
+          color: red;
+        }
+  
+        .black {
+          color: white;
+        }
+  
+        .green {
+          color: green;
+        }
+      }
+    }
+
     .roulette-info {
       display: flex;
       flex-direction: row;

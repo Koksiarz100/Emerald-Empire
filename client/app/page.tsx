@@ -9,6 +9,7 @@ export default function Home() {
   const [position, setPosition] = useState(5000);
   const [rouletteTimer, setRouletteTimer] = useState(0);
   const [isHidden, setIsHidden] = useState(true);
+  const [players, setPlayers] = useState([]);
 
   useEffect(() => {
     if (backgroundPosition > position) {
@@ -54,6 +55,16 @@ export default function Home() {
           <div className="roulette-arrow"></div>
           <div className={isHidden ? "roulette-timer hidden" : "roulette-timer"}>
             {rouletteTimer/1000} seconds
+          </div>
+        </div>
+        <div className="roulette-options">
+          <div className="roulette-input">
+            <input className="roulette-bet" type="number" placeholder="Kwota zakładu" />
+          </div>
+          <div className="roulette-buttons">
+            <button className="roulette-option red" onClick={spin}>Czerwone</button>
+            <button className="roulette-option green" onClick={spin}>Zielone</button>
+            <button className="roulette-option black" onClick={spin}>Czarne</button>
           </div>
         </div>
         <div className="roulette-info">
