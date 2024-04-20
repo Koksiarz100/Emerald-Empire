@@ -5,15 +5,17 @@ import React, { useState, useEffect } from "react";
 import "./styles.scss";
 
 export default function Home() {
-  const [backgroundPosition, setBackgroundPosition] = useState(5000);
-  const [position, setPosition] = useState(5000);
-  const [rouletteTimer, setRouletteTimer] = useState(0);
-  const [isHidden, setIsHidden] = useState(true);
+  const [backgroundPosition, setBackgroundPosition] = useState<number>(5000);
+  const [position, setPosition] = useState<number>(5000);
+  const [rouletteTimer, setRouletteTimer] = useState<number>(0);
+  const [isHidden, setIsHidden] = useState<boolean>(true);
   const [bets, setBets] = useState<{red: number[], green: number[], black: number[]}>({red: [], green: [], black: []});
-  const [bet, setBet] = useState(0);
+  const [bet, setBet] = useState<number>(0);
+  const [isSpinning, setIsSpinning] = useState<boolean>(false);
 
   useEffect(() => {
     if (backgroundPosition > position) {
+      setIsSpinning(true);
       const decrement = backgroundPosition <= 500 ? 20 : 100;
       const timer = setTimeout(() => {
         setBackgroundPosition(backgroundPosition - decrement);
@@ -25,6 +27,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       if(position <= 0) {
+        setIsSpinning(false);
         setPosition(5000);
         setBackgroundPosition(5000);
         setBets({red: [], green: [], black: []});
@@ -43,16 +46,8 @@ export default function Home() {
       return () => clearTimeout(timer);
     }
     setIsHidden(true);
-    spin();
-  }, [rouletteTimer]);
-
-  function reset() {
-    
-  }
-
-  const spin = () => {
     setPosition(position - 5000);
-  }
+  }, [rouletteTimer]);
 
   function takeBet(color: string) {
     if (bet > 0) {
@@ -77,7 +72,7 @@ export default function Home() {
             {rouletteTimer/1000} seconds
           </div>
         </div>
-        <div className="roulette-options">
+        <div className={isSpinning ? "roulette-options disabled" : "roulette-options"}>
           <div className="roulette-input">
             <input className="roulette-bet" type="number" placeholder="Kwota zakładu" onChange={(event) => setBet(Number(event.target.value))}/>
           </div>
