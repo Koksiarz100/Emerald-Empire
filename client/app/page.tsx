@@ -9,7 +9,8 @@ export default function Home() {
   const [position, setPosition] = useState(5000);
   const [rouletteTimer, setRouletteTimer] = useState(0);
   const [isHidden, setIsHidden] = useState(true);
-  const [players, setPlayers] = useState([]);
+  const [bets, setBets] = useState<{red: number[], green: number[], black: number[]}>({red: [], green: [], black: []});
+  const [bet, setBet] = useState(0);
 
   useEffect(() => {
     if (backgroundPosition > position) {
@@ -46,6 +47,18 @@ export default function Home() {
     setPosition(position - 5000);
   }
 
+  function takeBet(color: string) {
+    if (bet > 0) {
+      if (color === 'red') {
+        setBets(prevBets => ({ ...prevBets, red: [...prevBets.red, bet] }));
+      } else if (color === 'green') {
+        setBets(prevBets => ({ ...prevBets, green: [...prevBets.green, bet] }));
+      } else if (color === 'black') {
+        setBets(prevBets => ({ ...prevBets, black: [...prevBets.black, bet] }));
+      }
+    }
+  }
+
   return (
     <main>
       <h1>Emerald Empire</h1>
@@ -59,32 +72,43 @@ export default function Home() {
         </div>
         <div className="roulette-options">
           <div className="roulette-input">
-            <input className="roulette-bet" type="number" placeholder="Kwota zakładu" />
+            <input className="roulette-bet" type="number" placeholder="Kwota zakładu" onChange={(event) => setBet(Number(event.target.value))}/>
           </div>
           <div className="roulette-buttons">
-            <button className="roulette-option red" onClick={spin}>Czerwone</button>
-            <button className="roulette-option green" onClick={spin}>Zielone</button>
-            <button className="roulette-option black" onClick={spin}>Czarne</button>
+            <button className="roulette-option red" onClick={() => takeBet('red')}>Czerwone</button>
+            <button className="roulette-option green" onClick={() => takeBet('green')}>Zielone</button>
+            <button className="roulette-option black" onClick={() => takeBet('black')}>Czarne</button>
           </div>
         </div>
         <div className="roulette-info">
           <div className="roulette-info-red">
             <span>Czerwone</span>
             <div className="roulette-info-players">
-              <div className="roulette-info-player"><span>Gracz 1 - 1000</span></div>
+              {
+                bets.red.map((bet, index) => (
+                  <div className="roulette-info-player" key={index}><span>Gracz {index + 1} - {bet}</span></div>
+                ))
+              }
             </div>
           </div>
           <div className="roulette-info-green">
             <span>Zielone</span>
             <div className="roulette-info-players">
-              <div className="roulette-info-player"><span>Gracz 1 - 1000</span></div>
+              {
+                bets.green.map((bet, index) => (
+                  <div className="roulette-info-player" key={index}><span>Gracz {index + 1} - {bet}</span></div>
+                ))
+              }
             </div>
           </div>
           <div className="roulette-info-black">
             <span>Czarne</span>
             <div className="roulette-info-players">
-              <div className="roulette-info-player"><span>Gracz 1 - 1000</span></div>
-              <div className="roulette-info-player"><span>Gracz 2 - 1000</span></div>
+              {
+                bets.black.map((bet, index) => (
+                  <div className="roulette-info-player" key={index}><span>Gracz {index + 1} - {bet}</span></div>
+                ))
+              }
             </div>
           </div>
         </div>
