@@ -24,11 +24,14 @@ export default function Home() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setPosition(5000);
-      setBackgroundPosition(5000);
-      setIsHidden(false);
-      setRouletteTimer(5000);
-    }, 6000);
+      if(position <= 0) {
+        setPosition(5000);
+        setBackgroundPosition(5000);
+        setBets({red: [], green: [], black: []});
+        setIsHidden(false);
+        setRouletteTimer(10000);
+      }
+    }, 3000);
     return () => clearTimeout(timer);
   }, [position, backgroundPosition]);
 
@@ -42,6 +45,10 @@ export default function Home() {
     setIsHidden(true);
     spin();
   }, [rouletteTimer]);
+
+  function reset() {
+    
+  }
 
   const spin = () => {
     setPosition(position - 5000);
