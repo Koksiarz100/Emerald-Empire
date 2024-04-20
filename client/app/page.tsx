@@ -56,6 +56,27 @@ export default function Home() {
             {rouletteTimer/1000} seconds
           </div>
         </div>
+        <div className="roulette-info">
+          <div className="roulette-info-red">
+            <span>Czerwone</span>
+            <div className="roulette-info-players">
+              <div className="roulette-info-player"><span>Gracz 1 - 1000</span></div>
+            </div>
+          </div>
+          <div className="roulette-info-green">
+            <span>Zielone</span>
+            <div className="roulette-info-players">
+              <div className="roulette-info-player"><span>Gracz 1 - 1000</span></div>
+            </div>
+          </div>
+          <div className="roulette-info-black">
+            <span>Czarne</span>
+            <div className="roulette-info-players">
+              <div className="roulette-info-player"><span>Gracz 1 - 1000</span></div>
+              <div className="roulette-info-player"><span>Gracz 2 - 1000</span></div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   );

@@ -10,6 +10,7 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 100%;
 
     .roulette-wheel {
       width: 1024px;
@@ -44,6 +45,46 @@ main {
 
       .hidden {
         display: none;
+      }
+    }
+
+    .roulette-info {
+      display: flex;
+      flex-direction: row;
+      margin-top: 20px;
+
+      .roulette-info-red {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        font-size: 1.2rem;
+        color: red;
+      }
+
+      .roulette-info-black {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        font-size: 1.2rem;
+        color: white;
+      }
+
+      .roulette-info-green {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        font-size: 1.2rem;
+        color: green;
+      }
+
+      .roulette-info-players {
+        width: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        font-size: 1.2rem;
+        color: white;
       }
     }
   }
