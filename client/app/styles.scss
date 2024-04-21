@@ -55,15 +55,17 @@ main {
       align-items: center;
       margin-top: 20px;
 
-      .roulette-input > input {
-        width: 200px;
-        height: 30px;
-        background: none;
-        border: 1px solid white;
-        color: white;
-        font-size: 1.1rem;
-        text-align: center;
-        margin: 0 10px 0 10px;
+      .roulette-input {
+        .roulette-bet {
+          width: 200px;
+          height: 30px;
+          background: none;
+          border: 1px solid white;
+          color: white;
+          font-size: 1.1rem;
+          text-align: center;
+          margin: 0 10px 0 10px;
+        }
       }
 
       .roulette-buttons {
@@ -73,7 +75,6 @@ main {
           background: none;
           width: 100px;
           height: 30px;
-          background: none;
           border: 1px solid white;
           color: white;
           font-size: 1.1rem;
