@@ -4,6 +4,16 @@ main {
   align-items: center;
   flex-direction: column;
   background-color: black;
+  color: white;
+
+  .profile-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 20px;
+    font-size: 1.1rem;
+  }
   
   .roulette-wrapper {
     display: flex;

@@ -5,13 +5,18 @@ import React, { useState, useEffect } from "react";
 import "./styles.scss";
 
 export default function Home() {
-  const [backgroundPosition, setBackgroundPosition] = useState<number>(5000);
-  const [position, setPosition] = useState<number>(5000);
+  const [backgroundPosition, setBackgroundPosition] = useState<number>(4096);
+  const [position, setPosition] = useState<number>(4096);
   const [rouletteTimer, setRouletteTimer] = useState<number>(0);
-  const [isHidden, setIsHidden] = useState<boolean>(true);
   const [bets, setBets] = useState<{red: number[], green: number[], black: number[]}>({red: [], green: [], black: []});
   const [bet, setBet] = useState<number>(0);
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
+  const [spin, setSpin] = useState<number>(0);
+
+  const firstSpins = 4096;
+  
+  const [saldo, setSaldo] = useState<number>(10000);
+  const [username, setUsername] = useState<string>('Koksiarz');
 
   useEffect(() => {
     if (backgroundPosition > position) {
@@ -28,10 +33,9 @@ export default function Home() {
     const timer = setTimeout(() => {
       if(position <= 0) {
         setIsSpinning(false);
-        setPosition(5000);
-        setBackgroundPosition(5000);
+        setPosition(4096);
+        setBackgroundPosition(4096);
         setBets({red: [], green: [], black: []});
-        setIsHidden(false);
         setRouletteTimer(10000);
       }
     }, 3000);
@@ -45,30 +49,44 @@ export default function Home() {
       }, 100);
       return () => clearTimeout(timer);
     }
-    setIsHidden(true);
-    setPosition(position - 5000);
+    setPosition(position - 4096);
   }, [rouletteTimer]);
+
+  function randomizeSpin() {
+    var rand = Math.floor(Math.random() * 513);
+    return rand + firstSpins;
+  }
 
   function takeBet(color: string) {
     if (bet > 0) {
-      if (color === 'red') {
-        setBets(prevBets => ({ ...prevBets, red: [...prevBets.red, bet] }));
-      } else if (color === 'green') {
-        setBets(prevBets => ({ ...prevBets, green: [...prevBets.green, bet] }));
-      } else if (color === 'black') {
-        setBets(prevBets => ({ ...prevBets, black: [...prevBets.black, bet] }));
+      if(bet <= saldo) {
+        if (color === 'red') {
+          setSaldo(saldo - bet);
+          setBets(prevBets => ({ ...prevBets, red: [...prevBets.red, bet] }));
+        } else if (color === 'green') {
+          setSaldo(saldo - bet);
+          setBets(prevBets => ({ ...prevBets, green: [...prevBets.green, bet] }));
+        } else if (color === 'black') {
+          setSaldo(saldo - bet);
+          setBets(prevBets => ({ ...prevBets, black: [...prevBets.black, bet] }));
+        }
+      }
+      else {
+        console.log('Za mało środków na koncie');
       }
     }
   }
 
   return (
     <main>
-      <h1>Emerald Empire</h1>
-      <p>Casino online</p>
+      <div className="profile-wrapper">
+        <span>{username}</span>
+        <span>Saldo: {saldo}</span>
+      </div>
       <div className="roulette-wrapper">
         <div className="roulette-wheel" style={{backgroundPosition: `${backgroundPosition}px`}}>
           <div className="roulette-arrow"></div>
-          <div className={isHidden ? "roulette-timer hidden" : "roulette-timer"}>
+          <div className={isSpinning ? "roulette-timer hidden" : "roulette-timer"}>
             {rouletteTimer/1000} seconds
           </div>
         </div>
