@@ -6,15 +6,15 @@ import "./styles.scss";
 import { start } from "repl";
 
 export default function Home() {
-  const [backgroundPosition, setBackgroundPosition] = useState<number>(4096);
+  const [backgroundPosition, setBackgroundPosition] = useState<number>(8192);
   const [position, setPosition] = useState<number>(0);
   const [rouletteTimer, setRouletteTimer] = useState<number>(0);
   const [bets, setBets] = useState<{red: number[], green: number[], black: number[]}>({red: [], green: [], black: []});
   const [bet, setBet] = useState<number>(0);
   const [isSpinning, setIsSpinning] = useState<boolean>(true);
-  const [decrement, setDecrement] = useState<number>(128);
-  const [startPosition, setStartPosition] = useState<number>(4096);
-  const [roulettePosition, setRoulettePosition] = useState<number>(4096);
+  const [decrement, setDecrement] = useState<number>(256);
+  const [startPosition, setStartPosition] = useState<number>(8192);
+  const [roulettePosition, setRoulettePosition] = useState<number>(8192);
   
   const [saldo, setSaldo] = useState<number>(10000);
   const [username, setUsername] = useState<string>('Koksiarz');
@@ -26,7 +26,7 @@ export default function Home() {
     if(backgroundPosition <= position) {
       resetRoulette();
     }
-  }, [backgroundPosition, position, isSpinning, startPosition, decrement, roulettePosition]);
+  }, [backgroundPosition, position, isSpinning]);
 
   useEffect(() => {
     if (rouletteTimer > 0) {
@@ -39,9 +39,8 @@ export default function Home() {
 
   function randomizePosition() { // Losowanie pozycji
     var random = Math.floor(Math.random() * 1025);
-
-    setPosition(0 - random);
-    console.log(random);
+    console.log("Wygrywająca pozycja: " + random);
+    return random;
   }
 
   function rouletteTimerOperation() { // Timer ruletki
@@ -53,12 +52,13 @@ export default function Home() {
 
   function resetRoulette() { // Resetowanie ruletki
     const timer = setTimeout(() => {
-      setDecrement(128);
+      setDecrement(256);
       setIsSpinning(false);
-      randomizePosition();
-      setStartPosition(4096 + Math.abs(position));
-      console.log("Start position: " + startPosition);
-      setBackgroundPosition(4096);
+      const newPosition = -randomizePosition();
+      setPosition(newPosition);
+      setStartPosition(8192 + (Math.abs(newPosition)));
+      setRoulettePosition(8192 + (Math.abs(newPosition)));
+      setBackgroundPosition(8192);
       setBets({red: [], green: [], black: []});
       setRouletteTimer(10000);
     }, 3000);
@@ -71,7 +71,7 @@ export default function Home() {
       setBackgroundPosition(backgroundPosition - decrement);
       setRoulettePosition(roulettePosition - decrement);
       console.log(backgroundPosition);
-      if (roulettePosition <= startPosition / 2 && decrement > 8) {
+      if (roulettePosition <= startPosition / 2 && decrement > 1) {
         setDecrement(decrement / 2);
         setStartPosition(startPosition / 2);
       }
