@@ -6,41 +6,23 @@ import "./styles.scss";
 
 export default function Home() {
   const [backgroundPosition, setBackgroundPosition] = useState<number>(4096);
-  const [position, setPosition] = useState<number>(4096);
+  const [position, setPosition] = useState<number>(0);
   const [rouletteTimer, setRouletteTimer] = useState<number>(0);
   const [bets, setBets] = useState<{red: number[], green: number[], black: number[]}>({red: [], green: [], black: []});
   const [bet, setBet] = useState<number>(0);
-  const [isSpinning, setIsSpinning] = useState<boolean>(false);
-  const [spin, setSpin] = useState<number>(0);
-
-  const firstSpins = 4096;
+  const [isSpinning, setIsSpinning] = useState<boolean>(true);
   
   const [saldo, setSaldo] = useState<number>(10000);
   const [username, setUsername] = useState<string>('Koksiarz');
 
   useEffect(() => {
-    if (backgroundPosition > position) {
-      setIsSpinning(true);
-      const decrement = backgroundPosition <= 500 ? 20 : 100;
-      const timer = setTimeout(() => {
-        setBackgroundPosition(backgroundPosition - decrement);
-      }, 100);
-      return () => clearTimeout(timer);
+    if (backgroundPosition > position && isSpinning === true) {
+      spinning();
     }
-  }, [backgroundPosition, position]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if(position <= 0) {
-        setIsSpinning(false);
-        setPosition(4096);
-        setBackgroundPosition(4096);
-        setBets({red: [], green: [], black: []});
-        setRouletteTimer(10000);
-      }
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [position, backgroundPosition]);
+    if(backgroundPosition <= position) {
+      resetRoulette();
+    }
+  }, [backgroundPosition, position, isSpinning]);
 
   useEffect(() => {
     if (rouletteTimer > 0) {
@@ -49,26 +31,44 @@ export default function Home() {
       }, 100);
       return () => clearTimeout(timer);
     }
-    setPosition(position - 4096);
+    if(rouletteTimer === 0) {
+      setIsSpinning(true);
+    }
   }, [rouletteTimer]);
 
-  function randomizeSpin() {
-    var rand = Math.floor(Math.random() * 513);
-    return rand + firstSpins;
+  function resetRoulette() { // Resetowanie ruletki
+    const timer = setTimeout(() => {
+      setIsSpinning(false);
+      setBackgroundPosition(4096);
+      setBets({red: [], green: [], black: []});
+      setRouletteTimer(10000);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }
+
+  function spinning() { // Kręcenie ruletką
+    setIsSpinning(true);
+    const decrement = backgroundPosition <= 500 ? 20 : 100;
+    const timer = setTimeout(() => {
+      setBackgroundPosition(backgroundPosition - decrement);
+    }, 100);
+    return () => clearTimeout(timer);
   }
 
   function takeBet(color: string) {
     if (bet > 0) {
-      if(bet <= saldo) {
-        if (color === 'red') {
-          setSaldo(saldo - bet);
-          setBets(prevBets => ({ ...prevBets, red: [...prevBets.red, bet] }));
-        } else if (color === 'green') {
-          setSaldo(saldo - bet);
-          setBets(prevBets => ({ ...prevBets, green: [...prevBets.green, bet] }));
-        } else if (color === 'black') {
-          setSaldo(saldo - bet);
-          setBets(prevBets => ({ ...prevBets, black: [...prevBets.black, bet] }));
+      if (Number.isInteger(bet)) {
+        if(bet <= saldo) {
+          if (color === 'red') {
+            setSaldo(saldo - bet);
+            setBets(prevBets => ({ ...prevBets, red: [...prevBets.red, bet] }));
+          } else if (color === 'green') {
+            setSaldo(saldo - bet);
+            setBets(prevBets => ({ ...prevBets, green: [...prevBets.green, bet] }));
+          } else if (color === 'black') {
+            setSaldo(saldo - bet);
+            setBets(prevBets => ({ ...prevBets, black: [...prevBets.black, bet] }));
+          }
         }
       }
       else {
