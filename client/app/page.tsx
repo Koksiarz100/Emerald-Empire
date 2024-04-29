@@ -26,15 +26,19 @@ export default function Home() {
 
   useEffect(() => {
     if (rouletteTimer > 0) {
-      const timer = setTimeout(() => {
-        setRouletteTimer(rouletteTimer - 100);
-      }, 100);
-      return () => clearTimeout(timer);
+      rouletteTimerOperation();
     }
     if(rouletteTimer === 0) {
       setIsSpinning(true);
     }
   }, [rouletteTimer]);
+
+  function rouletteTimerOperation() { // Timer ruletki
+    const timer = setTimeout(() => {
+      setRouletteTimer(rouletteTimer - 100);
+    }, 100);
+    return () => clearTimeout(timer);
+  }
 
   function resetRoulette() { // Resetowanie ruletki
     const timer = setTimeout(() => {
@@ -55,7 +59,7 @@ export default function Home() {
     return () => clearTimeout(timer);
   }
 
-  function takeBet(color: string) {
+  function takeBet(color: string) { // Przyjmowanie zakładu
     if (bet > 0) {
       if (Number.isInteger(bet)) {
         if(bet <= saldo) {
@@ -70,9 +74,12 @@ export default function Home() {
             setBets(prevBets => ({ ...prevBets, black: [...prevBets.black, bet] }));
           }
         }
+        else {
+          console.log('Za mało środków na koncie');
+        }
       }
       else {
-        console.log('Za mało środków na koncie');
+        console.log('Kwota zakładu musi być liczbą całkowitą');
       }
     }
   }
