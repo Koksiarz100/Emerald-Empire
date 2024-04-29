@@ -81,16 +81,28 @@ export default function Home() {
     return () => clearTimeout(timer);
   }
 
-  function checkWinningPosition() { // 146 na 1 pole
+  function checkWinningPosition() { // Sprawdzanie wygrywającej pozycji
     let positivePosition = Math.abs(position);
     if ((positivePosition >= 0 && positivePosition < 146) || (positivePosition >= 292 && positivePosition < 438) || (positivePosition > 730 && positivePosition <= 876)) {
       console.log("Czerwone wygrywają!");
+      if (bets.red.length > 0) {
+        let totalWin = bets.red.reduce((acc, bet) => acc + bet * 2, 0);
+        setSaldo(saldo + totalWin);
+      }
     }
     else if (positivePosition > 438 && positivePosition <= 584) {
       console.log("Zielone wygrywają!");
+      if (bets.green.length > 0) {
+        let totalWin = bets.green.reduce((acc, bet) => acc + bet * 14, 0);
+        setSaldo(saldo + totalWin);
+      }
     }
     else if ((positivePosition >= 146 && positivePosition < 292) || (positivePosition > 584 && positivePosition <= 730) || (positivePosition > 876 && positivePosition <= 1024)) {
       console.log("Czarne wygrywają!");
+      if (bets.black.length > 0) {
+        let totalWin = bets.black.reduce((acc, bet) => acc + bet * 2, 0);
+        setSaldo(saldo + totalWin);
+      }
     }
   }
 
