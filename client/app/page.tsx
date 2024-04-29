@@ -39,7 +39,7 @@ export default function Home() {
 
   function randomizePosition() { // Losowanie pozycji
     var random = Math.floor(Math.random() * 1025);
-    console.log("Wygrywająca pozycja: " + random);
+    console.log("Winning position: " + -random);
     return random;
   }
 
@@ -51,6 +51,8 @@ export default function Home() {
   }
 
   function resetRoulette() { // Resetowanie ruletki
+    checkWinningPosition();
+    console.log("Resetting roulette!");
     const timer = setTimeout(() => {
       setDecrement(256);
       setIsSpinning(false);
@@ -66,17 +68,30 @@ export default function Home() {
   }
 
   function spinning() { // Kręcenie ruletką
+    console.log("Spinning roulette!");
     setIsSpinning(true);
     const timer = setTimeout(() => {
       setBackgroundPosition(backgroundPosition - decrement);
       setRoulettePosition(roulettePosition - decrement);
-      console.log(backgroundPosition);
       if (roulettePosition <= startPosition / 2 && decrement > 1) {
         setDecrement(decrement / 2);
         setStartPosition(startPosition / 2);
       }
     }, 100);
     return () => clearTimeout(timer);
+  }
+
+  function checkWinningPosition() { // 146 na 1 pole
+    let positivePosition = Math.abs(position);
+    if ((positivePosition >= 0 && positivePosition < 146) || (positivePosition >= 292 && positivePosition < 438) || (positivePosition > 730 && positivePosition <= 876)) {
+      console.log("Czerwone wygrywają!");
+    }
+    else if (positivePosition > 438 && positivePosition <= 584) {
+      console.log("Zielone wygrywają!");
+    }
+    else if ((positivePosition >= 146 && positivePosition < 292) || (positivePosition > 584 && positivePosition <= 730) || (positivePosition > 876 && positivePosition <= 1024)) {
+      console.log("Czarne wygrywają!");
+    }
   }
 
   function takeBet(color: string) { // Przyjmowanie zakładu
