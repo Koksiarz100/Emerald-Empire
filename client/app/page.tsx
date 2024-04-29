@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 
 import "./styles.scss";
+import { start } from "repl";
 
 export default function Home() {
   const [backgroundPosition, setBackgroundPosition] = useState<number>(4096);
@@ -11,6 +12,9 @@ export default function Home() {
   const [bets, setBets] = useState<{red: number[], green: number[], black: number[]}>({red: [], green: [], black: []});
   const [bet, setBet] = useState<number>(0);
   const [isSpinning, setIsSpinning] = useState<boolean>(true);
+  const [decrement, setDecrement] = useState<number>(128);
+  const [startPosition, setStartPosition] = useState<number>(4096);
+  const [roulettePosition, setRoulettePosition] = useState<number>(4096);
   
   const [saldo, setSaldo] = useState<number>(10000);
   const [username, setUsername] = useState<string>('Koksiarz');
@@ -22,7 +26,7 @@ export default function Home() {
     if(backgroundPosition <= position) {
       resetRoulette();
     }
-  }, [backgroundPosition, position, isSpinning]);
+  }, [backgroundPosition, position, isSpinning, startPosition, decrement, roulettePosition]);
 
   useEffect(() => {
     if (rouletteTimer > 0) {
@@ -33,6 +37,13 @@ export default function Home() {
     }
   }, [rouletteTimer]);
 
+  function randomizePosition() { // Losowanie pozycji
+    var random = Math.floor(Math.random() * 1025);
+
+    setPosition(0 - random);
+    console.log(random);
+  }
+
   function rouletteTimerOperation() { // Timer ruletki
     const timer = setTimeout(() => {
       setRouletteTimer(rouletteTimer - 100);
@@ -42,7 +53,11 @@ export default function Home() {
 
   function resetRoulette() { // Resetowanie ruletki
     const timer = setTimeout(() => {
+      setDecrement(128);
       setIsSpinning(false);
+      randomizePosition();
+      setStartPosition(4096 + Math.abs(position));
+      console.log("Start position: " + startPosition);
       setBackgroundPosition(4096);
       setBets({red: [], green: [], black: []});
       setRouletteTimer(10000);
@@ -52,9 +67,14 @@ export default function Home() {
 
   function spinning() { // Kręcenie ruletką
     setIsSpinning(true);
-    const decrement = backgroundPosition <= 500 ? 20 : 100;
     const timer = setTimeout(() => {
       setBackgroundPosition(backgroundPosition - decrement);
+      setRoulettePosition(roulettePosition - decrement);
+      console.log(backgroundPosition);
+      if (roulettePosition <= startPosition / 2 && decrement > 8) {
+        setDecrement(decrement / 2);
+        setStartPosition(startPosition / 2);
+      }
     }, 100);
     return () => clearTimeout(timer);
   }
