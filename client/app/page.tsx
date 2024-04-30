@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 
 import "./styles.scss";
-import { start } from "repl";
 
 export default function Home() {
   const [backgroundPosition, setBackgroundPosition] = useState<number>(8192);
@@ -19,7 +18,7 @@ export default function Home() {
   const [saldo, setSaldo] = useState<number>(10000);
   const [username, setUsername] = useState<string>('Koksiarz');
 
-  useEffect(() => {
+  useEffect(() => { // Inicjalizacja ruletki
     if (backgroundPosition > position && isSpinning === true) {
       spinning();
     }
@@ -28,7 +27,7 @@ export default function Home() {
     }
   }, [backgroundPosition, position, isSpinning]);
 
-  useEffect(() => {
+  useEffect(() => { // Timer ruletki
     if (rouletteTimer > 0) {
       rouletteTimerOperation();
     }
