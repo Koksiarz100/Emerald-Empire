@@ -5,16 +5,18 @@ import React, { useState, useEffect } from "react";
 import "./styles.scss";
 
 export default function Home() {
-  const [backgroundPosition, setBackgroundPosition] = useState<number>(8192);
-  const [position, setPosition] = useState<number>(0);
+  // Betowanie
   const [rouletteTimer, setRouletteTimer] = useState<number>(0);
   const [bets, setBets] = useState<{red: number[], green: number[], black: number[]}>({red: [], green: [], black: []});
   const [bet, setBet] = useState<number>(0);
+  // Ruletka
+  const [backgroundPosition, setBackgroundPosition] = useState<number>(8192);
+  const [position, setPosition] = useState<number>(0);
   const [isSpinning, setIsSpinning] = useState<boolean>(true);
   const [decrement, setDecrement] = useState<number>(256);
   const [startPosition, setStartPosition] = useState<number>(8192);
   const [roulettePosition, setRoulettePosition] = useState<number>(8192);
-  
+  // Użytkownik
   const [saldo, setSaldo] = useState<number>(10000);
   const [username, setUsername] = useState<string>('Koksiarz');
 
