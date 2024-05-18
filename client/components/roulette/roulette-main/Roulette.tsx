@@ -16,6 +16,7 @@ export default function Roulette() {
   const [decrement, setDecrement] = useState<number>(256);
   const [startPosition, setStartPosition] = useState<number>(8192); // Pozycja startowa
   const [roulettePosition, setRoulettePosition] = useState<number>(8192); // Pozycja ruletki
+  const [isWinningPositionSet, setIsWinningPositionSet] = useState<boolean>(false);
 
   const [saldo, setSaldo] = useState<number>(10000);
   const [username, setUsername] = useState<string>('Koksiarz');
@@ -57,11 +58,10 @@ export default function Roulette() {
     const timer = setTimeout(() => {
       setDecrement(256);
       setIsSpinning(false);
-      const newPosition = -randomizePosition();
-      setPosition(newPosition);
-      setStartPosition(8192 + (Math.abs(newPosition)));
-      setRoulettePosition(8192 + (Math.abs(newPosition)));
+      setPosition(0);
       setBackgroundPosition(8192);
+      setStartPosition(8192);
+      setIsWinningPositionSet(false);
       setBets({red: [], green: [], black: []});
       setRouletteTimer(10000);
     }, 3000);
@@ -72,10 +72,21 @@ export default function Roulette() {
     setIsSpinning(true);
     const timer = setTimeout(() => {
       setBackgroundPosition(backgroundPosition - decrement);
-      setRoulettePosition(roulettePosition - decrement);
-      if (roulettePosition <= startPosition / 2 && decrement > 1) {
-        setDecrement(decrement / 2);
-        setStartPosition(startPosition / 2);
+      console.log("Background position: " + backgroundPosition);
+      if (backgroundPosition === 256 && isWinningPositionSet === false) {
+        const newPosition = -(randomizePosition() + 2048);
+        console.log("New position: " + newPosition);
+        setPosition(newPosition);
+        setStartPosition(newPosition);
+        setIsWinningPositionSet(true);
+        setDecrement(64);
+      }
+      if (isWinningPositionSet === true && backgroundPosition <= 0) {
+        if(backgroundPosition <= startPosition / 2 && decrement > 16) {
+          setDecrement(decrement / 2);
+          console.log("Decrement: " + decrement);
+          setStartPosition(startPosition / 2);
+        }
       }
     }, 100);
     return () => clearTimeout(timer);
