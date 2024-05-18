@@ -72,21 +72,17 @@ export default function Roulette() {
     setIsSpinning(true);
     const timer = setTimeout(() => {
       setBackgroundPosition(backgroundPosition - decrement);
-      console.log("Background position: " + backgroundPosition);
-      if (backgroundPosition === 256 && isWinningPositionSet === false) {
-        const newPosition = -(randomizePosition() + 2048);
+      if (backgroundPosition === 1024 && isWinningPositionSet === false) {
+        const newPosition = -(randomizePosition() + 1024);
         console.log("New position: " + newPosition);
         setPosition(newPosition);
         setStartPosition(newPosition);
-        setIsWinningPositionSet(true);
         setDecrement(64);
+        setIsWinningPositionSet(true);
       }
-      if (isWinningPositionSet === true && backgroundPosition <= 0) {
-        if(backgroundPosition <= startPosition / 2 && decrement > 16) {
-          setDecrement(decrement / 2);
-          console.log("Decrement: " + decrement);
-          setStartPosition(startPosition / 2);
-        }
+      if (isWinningPositionSet === true && backgroundPosition <= (startPosition + Math.abs(startPosition / 20))) {
+        setDecrement(1);
+        console.log("Decrementing!" + decrement);
       }
     }, 100);
     return () => clearTimeout(timer);
