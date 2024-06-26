@@ -90,7 +90,7 @@ export default function Roulette() {
 
   function checkWinningPosition() { // Sprawdzanie wygrywającej pozycji
     let positivePosition = Math.abs(position);
-    if ((positivePosition >= 0 && positivePosition < 146) || (positivePosition >= 292 && positivePosition < 438) || (positivePosition > 730 && positivePosition <= 876)) {
+    if ((positivePosition >= 0 + 1024 && positivePosition < 146 + 1024) || (positivePosition >= 292 + 1024 && positivePosition < 438 + 1024) || (positivePosition > 730 + 1024 && positivePosition <= 876 + 1024)) {
       console.log("Czerwone wygrywają!");
       if (bets.red.length > 0) {
         let totalWin = bets.red.reduce((acc, bet) => acc + bet * 2, 0);
