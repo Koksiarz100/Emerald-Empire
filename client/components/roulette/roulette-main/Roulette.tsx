@@ -1,8 +1,12 @@
+'use client'
+
 import React, {useState, useEffect} from 'react'
 
 import './roulette.scss'
 
 import Balance from '@/components/balance/Balance';
+
+import { getWinningPosition } from '@/components/roulette/roulette-main/connection/ServerConnection';
 
 export default function Roulette() {
   // Betowanie
@@ -14,8 +18,6 @@ export default function Roulette() {
   const [position, setPosition] = useState<number>(0); // Pozycja wygrywająca
   const [isSpinning, setIsSpinning] = useState<boolean>(true);
   const [decrement, setDecrement] = useState<number>(256);
-  const [startPosition, setStartPosition] = useState<number>(8192); // Pozycja startowa
-  const [roulettePosition, setRoulettePosition] = useState<number>(8192); // Pozycja ruletki
   const [isWinningPositionSet, setIsWinningPositionSet] = useState<boolean>(false);
 
   const [saldo, setSaldo] = useState<number>(10000);
@@ -26,7 +28,12 @@ export default function Roulette() {
       spinning();
     }
     if(backgroundPosition <= position) {
-      resetRoulette();
+      checkWinningPosition();
+      console.log("Resetting roulette!");
+      const timer = setTimeout(() => {
+        resetRoulette();
+      }, 3000);
+      return () => clearTimeout(timer);
     }
   }, [backgroundPosition, position, isSpinning]);
 
@@ -39,12 +46,6 @@ export default function Roulette() {
     }
   }, [rouletteTimer]);
 
-  function randomizePosition() { // Losowanie pozycji
-    var random = Math.floor(Math.random() * 1025);
-    console.log("Winning position: " + -random);
-    return random;
-  }
-
   function rouletteTimerOperation() { // Timer ruletki
     const timer = setTimeout(() => {
       setRouletteTimer(rouletteTimer - 100);
@@ -53,32 +54,25 @@ export default function Roulette() {
   }
 
   function resetRoulette() { // Resetowanie ruletki
-    checkWinningPosition();
-    console.log("Resetting roulette!");
-    const timer = setTimeout(() => {
-      setDecrement(256);
-      setIsSpinning(false);
-      setPosition(0);
-      setBackgroundPosition(8192);
-      setStartPosition(8192);
-      setIsWinningPositionSet(false);
-      setBets({red: [], green: [], black: []});
-      setRouletteTimer(10000);
-    }, 3000);
-    return () => clearTimeout(timer);
+    setDecrement(256);
+    setIsSpinning(false);
+    setPosition(0);
+    setBackgroundPosition(8192);
+    setIsWinningPositionSet(false);
+    setBets({red: [], green: [], black: []});
+    setRouletteTimer(10000);
   }
 
   function spinning() { // Kręcenie ruletką
     setIsSpinning(true);
     const timer = setTimeout(() => {
       setBackgroundPosition(backgroundPosition - decrement);
-      console.log("Background position: " + backgroundPosition)
       if (backgroundPosition === 1024 && isWinningPositionSet === false) {
-        const newPosition = -(randomizePosition() + 1024);
-        setPosition(newPosition);
-        setStartPosition(newPosition);
-        setDecrement(64);
-        setIsWinningPositionSet(true);
+        getWinningPosition().then(newPosition => {
+          setPosition(newPosition);
+          setDecrement(64);
+          setIsWinningPositionSet(true);
+        });
       }
       if (isWinningPositionSet === true && backgroundPosition <= 0) {
         if(backgroundPosition <= 0 && decrement === 64) {
@@ -196,6 +190,11 @@ export default function Roulette() {
               }
             </div>
           </div>
+        </div>
+        <div className='dev-buttons' style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px'}}>
+          <button onClick={() => setSaldo(saldo + 1000)}>Dodaj 1000</button>
+          <button onClick={() => setSaldo(saldo - 1000)}>Odejmij 1000</button>
+          <button onClick={() => resetRoulette()}>Resetuj ruletkę</button>
         </div>
       </div>
     </>
