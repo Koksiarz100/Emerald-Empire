@@ -1,33 +1,27 @@
 'use client'
 
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 
 import './roulette.scss'
 
+import { RouletteContextType, useRoulette } from '@/components/roulette/roulette-main/Utility/RouletteHooks'
 import Balance from '@/components/balance/Balance';
-
-import { getWinningPosition } from '@/components/roulette/roulette-main/connection/ServerConnection';
+import { getWinningPosition } from '@/components/roulette/roulette-main/Connection/ServerConnection';
 
 export default function Roulette() {
-  // Betowanie
-  const [rouletteTimer, setRouletteTimer] = useState<number>(0);
-  const [bets, setBets] = useState<{red: number[], green: number[], black: number[]}>({red: [], green: [], black: []});
-  const [bet, setBet] = useState<number>(0);
-  // Ruletka
-  const [backgroundPosition, setBackgroundPosition] = useState<number>(8192); // Pozycja ruletki
-  const [position, setPosition] = useState<number>(0); // Pozycja wygrywająca
-  const [isSpinning, setIsSpinning] = useState<boolean>(true);
-  const [decrement, setDecrement] = useState<number>(256);
-  const [isWinningPositionSet, setIsWinningPositionSet] = useState<boolean>(false);
+  const { backgroundPosition, setBackgroundPosition, isWinningPositionSet, setIsWinningPositionSet, bets, setBets, rouletteTimer, setRouletteTimer, isSpinning, setIsSpinning, position, setPosition, decrement, setDecrement } = useRoulette() as RouletteContextType;
 
+  // Betowanie
+  const [bet, setBet] = useState<number>(0);
+  // Użtkownik
   const [saldo, setSaldo] = useState<number>(10000);
   const [username, setUsername] = useState<string>('Koksiarz');
 
   useEffect(() => { // Inicjalizacja ruletki
-    if (backgroundPosition > position && isSpinning === true) {
+    if (position !== null && backgroundPosition > position && isSpinning === true) {
       spinning();
     }
-    if(backgroundPosition <= position) {
+    if(position !== null && backgroundPosition <= position) {
       checkWinningPosition();
       console.log("Resetting roulette!");
       const timer = setTimeout(() => {
@@ -66,23 +60,22 @@ export default function Roulette() {
   function spinning() { // Kręcenie ruletką
     setIsSpinning(true);
     const timer = setTimeout(() => {
-      setBackgroundPosition(backgroundPosition - decrement);
-      if (backgroundPosition === 1024 && isWinningPositionSet === false) {
-        getWinningPosition().then(newPosition => {
-          setPosition(newPosition);
-          setDecrement(64);
-          setIsWinningPositionSet(true);
-        });
-      }
-      if (isWinningPositionSet === true && backgroundPosition <= 0) {
-        if(backgroundPosition <= 0 && decrement === 64) {
-          setDecrement(32);
+      if (decrement !== null) {
+        setBackgroundPosition(backgroundPosition - decrement);
+        if (backgroundPosition === 1024 && isWinningPositionSet === false) {
+          getWinningPosition().then(newPosition => {
+            setPosition(newPosition);
+            setDecrement(64);
+            setIsWinningPositionSet(true);
+          });
         }
-        else if(backgroundPosition <= -512 && decrement === 32) {
-          setDecrement(16);
-        }
-        else if(backgroundPosition <= -1024 && decrement === 16) {
-          setDecrement(8);
+        if (isWinningPositionSet === true && backgroundPosition <= 0) {
+          if(backgroundPosition <= 0 && decrement === 64) {
+            setDecrement(32);
+          }
+          else if(backgroundPosition <= -512 && decrement === 32) {
+            setDecrement(16);
+          }
         }
       }
     }, 100);
@@ -90,6 +83,11 @@ export default function Roulette() {
   }
 
   function checkWinningPosition() { // Sprawdzanie wygrywającej pozycji
+    if (position === null) {
+      console.error("Pozycja jest null, nie można sprawdzić wygrywającej pozycji.");
+      return;
+    }
+
     let positivePosition = Math.abs(position);
     if ((positivePosition >= 0 + 1024 && positivePosition < 146 + 1024) || (positivePosition >= 292 + 1024 && positivePosition < 438 + 1024) || (positivePosition > 730 + 1024 && positivePosition <= 876 + 1024)) {
       console.log("Czerwone wygrywają!");
