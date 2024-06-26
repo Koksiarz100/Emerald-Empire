@@ -4,9 +4,9 @@ import React, {useState, useEffect, useContext} from 'react'
 
 import './roulette.scss'
 
-import { RouletteContextType, useRoulette } from '@/components/roulette/roulette-main/Utility/RouletteHooks'
 import Balance from '@/components/balance/Balance';
 import { getWinningPosition } from '@/components/roulette/roulette-main/Connection/ServerConnection';
+import { RouletteContextType, useRoulette } from '@/components/roulette/roulette-main/Utility/RouletteHooks'
 
 export default function Roulette() {
   const { backgroundPosition, setBackgroundPosition, isWinningPositionSet, setIsWinningPositionSet, bets, setBets, rouletteTimer, setRouletteTimer, isSpinning, setIsSpinning, position, setPosition, decrement, setDecrement } = useRoulette() as RouletteContextType;
@@ -96,14 +96,14 @@ export default function Roulette() {
         setSaldo(saldo + totalWin);
       }
     }
-    else if (positivePosition > 438 && positivePosition <= 584) {
+    else if (positivePosition > 438 + 1024 && positivePosition <= 584 + 1024) {
       console.log("Zielone wygrywają!");
       if (bets.green.length > 0) {
         let totalWin = bets.green.reduce((acc, bet) => acc + bet * 14, 0);
         setSaldo(saldo + totalWin);
       }
     }
-    else if ((positivePosition >= 146 && positivePosition < 292) || (positivePosition > 584 && positivePosition <= 730) || (positivePosition > 876 && positivePosition <= 1024)) {
+    else if ((positivePosition >= 146 + 1024 && positivePosition < 292 + 1024) || (positivePosition > 584 + 1024 && positivePosition <= 730 + 1024) || (positivePosition > 876 + 1024 && positivePosition <= 1024 + 1024)) {
       console.log("Czarne wygrywają!");
       if (bets.black.length > 0) {
         let totalWin = bets.black.reduce((acc, bet) => acc + bet * 2, 0);
