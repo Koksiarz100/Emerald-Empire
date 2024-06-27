@@ -5,11 +5,14 @@ import React, {useState, useEffect, useContext} from 'react'
 import './roulette.scss'
 
 import Balance from '@/components/balance/Balance';
-import { getWinningPosition } from '@/components/roulette/roulette-main/Connection/ServerConnection';
+import { useResetRoulette, useSpinning, useRouletteTimerOperation } from '@/components/roulette/roulette-main/Utility/RouletteActions';
 import { RouletteContextType, useRoulette } from '@/components/roulette/roulette-main/Utility/RouletteHooks'
 
 export default function Roulette() {
   const { backgroundPosition, setBackgroundPosition, isWinningPositionSet, setIsWinningPositionSet, bets, setBets, rouletteTimer, setRouletteTimer, isSpinning, setIsSpinning, position, setPosition, decrement, setDecrement } = useRoulette() as RouletteContextType;
+  const startTimer = useRouletteTimerOperation();
+  const resetRoulette = useResetRoulette();
+  const spinning = useSpinning();
 
   // Betowanie
   const [bet, setBet] = useState<number>(0);
@@ -33,54 +36,13 @@ export default function Roulette() {
 
   useEffect(() => { // Timer ruletki
     if (rouletteTimer > 0) {
-      rouletteTimerOperation();
+      startTimer();
     }
     if(rouletteTimer === 0) {
       setIsSpinning(true);
     }
   }, [rouletteTimer]);
 
-  function rouletteTimerOperation() { // Timer ruletki
-    const timer = setTimeout(() => {
-      setRouletteTimer(rouletteTimer - 100);
-    }, 100);
-    return () => clearTimeout(timer);
-  }
-
-  function resetRoulette() { // Resetowanie ruletki
-    setDecrement(256);
-    setIsSpinning(false);
-    setPosition(0);
-    setBackgroundPosition(8192);
-    setIsWinningPositionSet(false);
-    setBets({red: [], green: [], black: []});
-    setRouletteTimer(10000);
-  }
-
-  function spinning() { // Kręcenie ruletką
-    setIsSpinning(true);
-    const timer = setTimeout(() => {
-      if (decrement !== null) {
-        setBackgroundPosition(backgroundPosition - decrement);
-        if (backgroundPosition === 1024 && isWinningPositionSet === false) {
-          getWinningPosition().then(newPosition => {
-            setPosition(newPosition);
-            setDecrement(64);
-            setIsWinningPositionSet(true);
-          });
-        }
-        if (isWinningPositionSet === true && backgroundPosition <= 0) {
-          if(backgroundPosition <= 0 && decrement === 64) {
-            setDecrement(32);
-          }
-          else if(backgroundPosition <= -512 && decrement === 32) {
-            setDecrement(16);
-          }
-        }
-      }
-    }, 100);
-    return () => clearTimeout(timer);
-  }
 
   function checkWinningPosition() { // Sprawdzanie wygrywającej pozycji
     if (position === null) {
