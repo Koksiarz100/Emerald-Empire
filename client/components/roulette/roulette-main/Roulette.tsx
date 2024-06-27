@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState, useEffect, useContext} from 'react'
+import React, { useState, useEffect } from 'react'
 
 import './roulette.scss'
 
@@ -9,7 +9,7 @@ import { useResetRoulette, useSpinning, useRouletteTimerOperation } from '@/comp
 import { RouletteContextType, useRoulette } from '@/components/roulette/roulette-main/Utility/RouletteHooks'
 
 export default function Roulette() {
-  const { backgroundPosition, setBackgroundPosition, isWinningPositionSet, setIsWinningPositionSet, bets, setBets, rouletteTimer, setRouletteTimer, isSpinning, setIsSpinning, position, setPosition, decrement, setDecrement } = useRoulette() as RouletteContextType;
+  const { backgroundPosition, bets, setBets, rouletteTimer, isSpinning, setIsSpinning, position } = useRoulette() as RouletteContextType;
   const startTimer = useRouletteTimerOperation();
   const resetRoulette = useResetRoulette();
   const spinning = useSpinning();
