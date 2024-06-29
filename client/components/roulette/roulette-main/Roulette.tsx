@@ -4,12 +4,13 @@ import React, { useState, useEffect } from 'react'
 
 import './roulette.scss'
 
-import Balance from '@/components/balance/Balance';
+import { Balance, useBalance, BalanceContextType } from '@/components/balance/Balance';
 import { useResetRoulette, useSpinning, useRouletteTimerOperation } from '@/components/roulette/roulette-main/Utility/RouletteActions';
 import { RouletteContextType, useRoulette } from '@/components/roulette/roulette-main/Utility/RouletteHooks'
 
 export default function Roulette() {
   const { backgroundPosition, bets, setBets, rouletteTimer, isSpinning, setIsSpinning, position } = useRoulette() as RouletteContextType;
+  const { saldo, setSaldo, setUsername, username } = useBalance() as BalanceContextType;
   const startTimer = useRouletteTimerOperation();
   const resetRoulette = useResetRoulette();
   const spinning = useSpinning();
@@ -17,8 +18,6 @@ export default function Roulette() {
   // Betowanie
   const [bet, setBet] = useState<number>(0);
   // Użtkownik
-  const [saldo, setSaldo] = useState<number>(10000);
-  const [username, setUsername] = useState<string>('Koksiarz');
 
   useEffect(() => { // Inicjalizacja ruletki
     if (position !== null && backgroundPosition > position && isSpinning === true) {
@@ -101,7 +100,7 @@ export default function Roulette() {
 
   return (
     <>
-      <Balance saldo={saldo} username={username} />
+      <Balance />
       <div className="roulette-wrapper">
         <div className="roulette-wheel" style={{backgroundPosition: `${backgroundPosition}px`}}>
           <div className="roulette-arrow"></div>
@@ -152,6 +151,7 @@ export default function Roulette() {
           </div>
         </div>
         <div className='dev-buttons' style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px'}}>
+          <input type="text" placeholder="Username" onChange={(event) => setUsername(event.target.value)} />
           <button onClick={() => setSaldo(saldo + 1000)}>Dodaj 1000</button>
           <button onClick={() => setSaldo(saldo - 1000)}>Odejmij 1000</button>
           <button onClick={() => resetRoulette()}>Resetuj ruletkę</button>
