@@ -1,6 +1,6 @@
 import React from "react";
-import { RouletteContextType, useRoulette } from "@/components/roulette/roulette-main/Utility/RouletteHooks";
-import { getWinningPosition } from "@/components/roulette/roulette-main/Connection/ServerConnection";
+import { RouletteContextType, useRoulette } from "@/components/roulette/roulette-main/utility/RouletteHooks";
+import { getWinningPosition } from "@/components/roulette/roulette-main/connection/ServerConnection";
 
 export function useRouletteTimerOperation() {
   const { rouletteTimer, setRouletteTimer } = useRoulette() as RouletteContextType;
@@ -35,28 +35,21 @@ export function useSpinning() { // Kręcenie ruletką
   const { backgroundPosition, setBackgroundPosition, decrement, setDecrement, isWinningPositionSet, setIsWinningPositionSet, setPosition, setIsSpinning } = useRoulette() as RouletteContextType;
   
   const spinning = () => {
-    setIsSpinning(true);
-    const timer = setTimeout(() => {
-      if (decrement !== null) {
-        setBackgroundPosition(backgroundPosition - decrement);
-        if (backgroundPosition === 1024 && isWinningPositionSet === false) {
-          getWinningPosition().then(newPosition => {
-            setPosition(newPosition);
-            setDecrement(64);
-            setIsWinningPositionSet(true);
-          });
-        }
-        if (isWinningPositionSet === true && backgroundPosition <= 0) {
-          if(backgroundPosition <= 0 && decrement === 64) {
-            setDecrement(32);
-          }
-          else if(backgroundPosition <= -512 && decrement === 32) {
-            setDecrement(16);
-          }
+    if (decrement !== null) {
+      setBackgroundPosition(backgroundPosition - decrement);
+      if (backgroundPosition === 1024 && isWinningPositionSet === false) {
+        getWinningPosition().then(newPosition => {
+          setPosition(newPosition);
+          setDecrement(64);
+          setIsWinningPositionSet(true);
+        });
+      }
+      if (isWinningPositionSet === true && backgroundPosition <= 0) {
+        if(backgroundPosition <= 0 && decrement === 64) {
+          setDecrement(32);
         }
       }
-    }, 100);
-    return () => clearTimeout(timer);
+    }
   }
 
   return spinning;
