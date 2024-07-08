@@ -5,12 +5,12 @@ import React, { useState, useEffect } from 'react'
 import './roulette.scss'
 
 import { Balance, useBalance, BalanceContextType } from '@/components/balance/Balance';
-import { useResetRoulette, useSpinning, useRouletteTimerOperation } from '@/components/roulette/roulette-main/Utility/RouletteActions';
-import { RouletteContextType, useRoulette } from '@/components/roulette/roulette-main/Utility/RouletteHooks'
+import { useResetRoulette, useSpinning, useRouletteTimerOperation } from '@/components/roulette/roulette-main/utility/RouletteActions';
+import { RouletteContextType, useRoulette } from '@/components/roulette/roulette-main/utility/RouletteHooks'
 
 export default function Roulette() {
   const { backgroundPosition, bets, setBets, rouletteTimer, isSpinning, setIsSpinning, position } = useRoulette() as RouletteContextType;
-  const { saldo, setSaldo, setUsername, username } = useBalance() as BalanceContextType;
+  const { saldo, setSaldo, setUsername } = useBalance() as BalanceContextType;
   const startTimer = useRouletteTimerOperation();
   const resetRoulette = useResetRoulette();
   const spinning = useSpinning();
@@ -21,7 +21,10 @@ export default function Roulette() {
 
   useEffect(() => { // Inicjalizacja ruletki
     if (position !== null && backgroundPosition > position && isSpinning === true) {
-      spinning();
+      const timer = setTimeout(() => {
+        spinning();
+      }, 100);
+      return () => clearTimeout(timer);
     }
     if(position !== null && backgroundPosition <= position) {
       checkWinningPosition();

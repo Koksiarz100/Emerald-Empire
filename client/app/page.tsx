@@ -1,7 +1,7 @@
 'use client'
 
-import { RouletteProvider } from "@/components/roulette/roulette-main/Utility/RouletteHooks";
-import { BalanceProvider, Balance } from "@/components/balance/Balance";
+import { RouletteProvider } from "@/components/roulette/roulette-main/utility/RouletteHooks";
+import { BalanceProvider } from "@/components/balance/Balance";
 import "./styles.scss";
 import Roulette from "@/components/roulette/roulette-main/Roulette";
 
