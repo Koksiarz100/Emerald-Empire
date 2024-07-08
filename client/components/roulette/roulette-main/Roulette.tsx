@@ -14,10 +14,7 @@ export default function Roulette() {
   const startTimer = useRouletteTimerOperation();
   const resetRoulette = useResetRoulette();
   const spinning = useSpinning();
-
-  // Betowanie
   const [bet, setBet] = useState<number>(0);
-  // Użtkownik
 
   useEffect(() => { // Inicjalizacja ruletki
     if (position !== null && backgroundPosition > position && isSpinning === true) {
