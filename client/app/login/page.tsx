@@ -7,6 +7,7 @@ import './login.scss'
 
 import { useEffect } from 'react'
 import { getToken } from '@/components/utility/auth/actions/getToken'
+import { checkToken } from '@/components/utility/auth/actions/checkToken'
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -14,6 +15,7 @@ export default function Login() {
   const router = useRouter();
 
   useEffect(() => {
+    checkToken();
     ifLoggedIn();
   }, []);
 
