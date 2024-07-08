@@ -13,11 +13,18 @@ app.use(cors({
 }));
 
 function verifyToken(req, res, next) {
-  const token = req.headers['authorization'];
+  let token = req.headers['authorization'];
   if (!token) return res.status(403).send({ message: 'No token provided.' });
 
+  if (token.startsWith('Bearer ')) {
+    token = token.slice(7, token.length);
+  }
+
   jwt.verify(token, SECRET_KEY, (err, decoded) => {
-    if (err) return res.status(500).send({ message: 'Failed to authenticate token.' });
+    if (err) {
+      console.error('Failed to authenticate token:', err);
+      return res.status(500).send({ message: 'Failed to authenticate token.' });
+    }
     req.userId = decoded.id;
     next();
   });
@@ -41,6 +48,7 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/protected', verifyToken, (req, res) => {
+  console.log('User get access to protected route:', req.userId);
   res.json({ message: 'Welcome to the protected route!' });
 });
 
