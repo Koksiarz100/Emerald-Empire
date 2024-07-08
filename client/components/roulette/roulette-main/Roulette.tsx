@@ -101,6 +101,11 @@ export default function Roulette() {
     }
   }
 
+  function devLogout() {
+    localStorage.removeItem('token');
+    window.location.reload();
+  }
+
   return (
     <>
       <Balance />
@@ -158,6 +163,7 @@ export default function Roulette() {
           <button onClick={() => setSaldo(saldo + 1000)}>Dodaj 1000</button>
           <button onClick={() => setSaldo(saldo - 1000)}>Odejmij 1000</button>
           <button onClick={() => resetRoulette()}>Resetuj ruletkę</button>
+          <button onClick={() => devLogout()}>Wyloguj</button>
         </div>
       </div>
     </>

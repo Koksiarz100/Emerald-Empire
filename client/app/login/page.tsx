@@ -1,14 +1,28 @@
 'use client'
 
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import './login.scss'
 
+import { useEffect } from 'react'
 import { getToken } from '@/components/utility/auth/actions/getToken'
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
+
+  useEffect(() => {
+    ifLoggedIn();
+  }, []);
+
+  const ifLoggedIn = () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      router.push('/');
+    }
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -16,6 +30,7 @@ export default function Login() {
     if (token) {
       localStorage.setItem('token', token);
       console.log('Token saved:', token);
+      router.push('/');
     } else {
       console.log('No token received');
     }
