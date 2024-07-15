@@ -28,10 +28,11 @@ export default function Login() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const token = await getToken(username, password);
-    if (token) {
-      localStorage.setItem('token', token);
-      console.log('Token saved:', token);
+    const credentials = await getToken(username, password);
+    if (credentials) {
+      localStorage.setItem('token', credentials.token);
+      localStorage.setItem('username', credentials.credentials.username)
+      console.log('Token saved:', credentials.token);
       router.push('/');
     } else {
       console.log('No token received');
