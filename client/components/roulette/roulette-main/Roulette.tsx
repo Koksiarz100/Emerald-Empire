@@ -9,23 +9,27 @@ import { useResetRoulette, useSpinning, useRouletteTimerOperation } from '@/comp
 import { RouletteContextType, useRoulette } from '@/components/roulette/roulette-main/utility/RouletteHooks'
 
 export default function Roulette() {
+  // State do obsługi ruletki
+  const [bet, setBet] = useState<number>(0);
+
+  // Contexty do obsługi ruletki
   const { backgroundPosition, bets, setBets, rouletteTimer, isSpinning, setIsSpinning, position } = useRoulette() as RouletteContextType;
   const { saldo, setSaldo, setUsername } = useBalance() as BalanceContextType;
+
+  // Proste hooki do obsługi ruletki
   const startTimer = useRouletteTimerOperation();
   const resetRoulette = useResetRoulette();
   const spinning = useSpinning();
-  const [bet, setBet] = useState<number>(0);
 
   useEffect(() => { // Inicjalizacja ruletki
-    if (position !== null && backgroundPosition > position && isSpinning === true) {
+    if (position !== null && backgroundPosition > position && isSpinning === true) { // Kręcenie się ruletki
       const timer = setTimeout(() => {
         spinning();
       }, 100);
       return () => clearTimeout(timer);
     }
-    if(position !== null && backgroundPosition <= position) {
+    if(position !== null && backgroundPosition <= position) { // Sprawdzanie wygrywającej pozycji i resetowanie ruletki
       checkWinningPosition();
-      console.log("Resetting roulette!");
       const timer = setTimeout(() => {
         resetRoulette();
       }, 3000);
@@ -98,7 +102,7 @@ export default function Roulette() {
     }
   }
 
-  function devLogout() {
+  function devLogout() { // DEV, trzeba usunąć!
     localStorage.removeItem('token');
     window.location.reload();
   }
@@ -155,7 +159,7 @@ export default function Roulette() {
             </div>
           </div>
         </div>
-        <div className='dev-buttons' style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px'}}>
+        <div className='dev-buttons' style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px'}}> {/* DEV, trzeba usunąć! */}
           <input type="text" placeholder="Username" onChange={(event) => setUsername(event.target.value)} />
           <button onClick={() => setSaldo(saldo + 1000)}>Dodaj 1000</button>
           <button onClick={() => setSaldo(saldo - 1000)}>Odejmij 1000</button>
