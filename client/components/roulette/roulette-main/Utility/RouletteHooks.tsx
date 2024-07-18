@@ -31,6 +31,8 @@ export interface RouletteContextType {
   setPosition: React.Dispatch<React.SetStateAction<number | null>>;
   decrement: number | null;
   setDecrement: React.Dispatch<React.SetStateAction<number | null>>;
+  bet: number;
+  setBet: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const RouletteProvider: React.FC<RouletteProviderProps> = ({ children }) => {
@@ -41,6 +43,7 @@ export const RouletteProvider: React.FC<RouletteProviderProps> = ({ children }) 
   const [isSpinning, setIsSpinning] = useState(false);
   const [position, setPosition] = useState<number | null>(0);
   const [decrement, setDecrement] = useState<number | null>(256);
+  const [bet, setBet] = useState<number>(0);
 
   const value = {
     backgroundPosition, setBackgroundPosition,
@@ -49,7 +52,8 @@ export const RouletteProvider: React.FC<RouletteProviderProps> = ({ children }) 
     rouletteTimer, setRouletteTimer,
     isSpinning, setIsSpinning,
     position, setPosition,
-    decrement, setDecrement
+    decrement, setDecrement,
+    bet, setBet
   };
 
   return <RouletteContext.Provider value={value}>{children}</RouletteContext.Provider>;
