@@ -18,6 +18,7 @@ export async function checkToken() {
       const apiError = error as ApiError;
       if (apiError.status === 500) {
         localStorage.removeItem('token');
+        localStorage.removeItem('username');
         console.error('Invalid token, deleted.');
       } else {
         console.error('Error validating token:', error);
