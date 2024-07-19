@@ -25,4 +25,8 @@ export async function checkToken() {
       }
     }
   }
+  else {
+    localStorage.removeItem('username');
+    console.log('No token found.');
+  }
 }
