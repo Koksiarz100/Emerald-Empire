@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, FC } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import './roulette.scss'
 
@@ -86,7 +86,7 @@ export default function Roulette() {
         </div>
         <RouletteInfo bets={bets} />
         <div className='dev-buttons' style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px'}}> {/* DEV, trzeba usunąć! */}
-          <input type="text" placeholder="Username" onChange={(event) => setUsername(event.target.value)} />
+          <span>DEV</span>
           <button onClick={() => setSaldo(saldo + 1000)}>Dodaj 1000</button>
           <button onClick={() => setSaldo(saldo - 1000)}>Odejmij 1000</button>
           <button onClick={() => resetRoulette()}>Resetuj ruletkę</button>

@@ -44,7 +44,7 @@ app.post('/login', (req, res) => {
 
   const token = jwt.sign({ id: user.id, login: user.login }, SECRET_KEY, { expiresIn: '1h' });
   const credentials = { id: user.id, username: user.username};
-  console.log('User logged in:', user.username, 'Token generated:', token)
+  console.log('User logged in as', user.username, ', Token generated:', token)
   res.send({ token, credentials });
 });
 

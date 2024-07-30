@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
+import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction, useEffect } from 'react';
+
+import checkCredentials from '../utility/auth/actions/checkCredentials';
 
 export interface BalanceContextType {
   saldo: number;
@@ -19,6 +21,17 @@ const useBalanceContext = () => useContext(BalanceContext);
 function BalanceProvider({ children }: { children: ReactNode }) {
   const [saldo, setSaldo] = useState(0);
   const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    async function fetchUsername() {
+      const username = await checkCredentials();
+      if (username) {
+        setUsername(username);
+      }
+    }
+  
+    fetchUsername();
+  }, []);
 
   return (
     <BalanceContext.Provider value={{ saldo, setSaldo, username, setUsername }}>
