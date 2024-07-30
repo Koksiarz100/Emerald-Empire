@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { useRouter } from 'next/navigation'
 
-import "./styles.scss";
+import "./styles/styles.scss";
 
 import { RouletteProvider } from "@/components/roulette/roulette-main/utility/RouletteHooks";
 import { BalanceProvider } from "@/components/balance/BalanceContext";
