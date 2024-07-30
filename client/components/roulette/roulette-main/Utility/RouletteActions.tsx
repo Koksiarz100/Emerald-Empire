@@ -16,7 +16,7 @@ export function useRouletteTimerOperation() {
 }
 
 export function useResetRoulette() {
-  const { setDecrement, setIsSpinning, setPosition, setBackgroundPosition, setIsWinningPositionSet, setBets, setRouletteTimer } = useRoulette() as RouletteContextType;
+  const { setDecrement, setIsSpinning, setPosition, setBackgroundPosition, setIsWinningPositionSet, setUserBets, setRouletteTimer } = useRoulette() as RouletteContextType;
 
   const reset = () => {
     setDecrement(256);
@@ -24,7 +24,7 @@ export function useResetRoulette() {
     setPosition(0);
     setBackgroundPosition(8192);
     setIsWinningPositionSet(false);
-    setBets({red: [], green: [], black: []});
+    setUserBets({ bet: [], user: [], color: [] });
     setRouletteTimer(10000);
   };
 
@@ -56,7 +56,7 @@ export function useSpinning() { // Kręcenie ruletką
 }
 
 export function useCheckingWinningPosition() { // Sprawdzanie wygrywającej pozycji
-  const { bets, position } = useRoulette() as RouletteContextType;
+  const { userBets, position } = useRoulette() as RouletteContextType;
   const { saldo, setSaldo } = useBalanceContext() as BalanceContextType;
 
   const checkingWinningPosition = () => {
@@ -66,6 +66,24 @@ export function useCheckingWinningPosition() { // Sprawdzanie wygrywającej pozy
     }
 
     let positivePosition = Math.abs(position);
+
+    const bets: { red: number[], green: number[], black: number[] } = {
+      red: [],
+      green: [],
+      black: []
+    };
+
+    userBets.bet.forEach((bet, index) => {
+      const color = userBets.color[index];
+      if (color === 'red') {
+        bets.red.push(bet);
+      } else if (color === 'green') {
+        bets.green.push(bet);
+      } else if (color === 'black') {
+        bets.black.push(bet);
+      }
+    });
+
     if ((positivePosition >= 0 + 1024 && positivePosition < 146 + 1024) || (positivePosition >= 292 + 1024 && positivePosition < 438 + 1024) || (positivePosition > 730 + 1024 && positivePosition <= 876 + 1024)) {
       console.log("Czerwone wygrywają!");
       if (bets.red.length > 0) {
@@ -94,7 +112,10 @@ export function useCheckingWinningPosition() { // Sprawdzanie wygrywającej pozy
 
 export function useTakeBet(color: string) { // Przyjmowanie zakładu
   const { saldo, setSaldo } = useBalanceContext() as BalanceContextType;
-  const { setBets, bet } = useRoulette() as RouletteContextType;
+  const { bet } = useRoulette() as RouletteContextType;
+
+  const { userBets, setUserBets } = useRoulette() as RouletteContextType;
+  const { username } = useBalanceContext() as BalanceContextType;
 
   const takeBet = (color: string) => {
     if (bet > 0) {
@@ -102,13 +123,16 @@ export function useTakeBet(color: string) { // Przyjmowanie zakładu
         if(bet <= saldo) {
           if (color === 'red') {
             setSaldo(saldo - bet);
-            setBets(prevBets => ({ ...prevBets, red: [...prevBets.red, bet] }));
+            setUserBets({ bet: [...userBets.bet, bet], user: [...userBets.user, username], color: [...userBets.color, color] });
+            console.log(userBets);
           } else if (color === 'green') {
             setSaldo(saldo - bet);
-            setBets(prevBets => ({ ...prevBets, green: [...prevBets.green, bet] }));
+            setUserBets({ bet: [...userBets.bet, bet], user: [...userBets.user, username], color: [...userBets.color, color] });
+            console.log(userBets);
           } else if (color === 'black') {
             setSaldo(saldo - bet);
-            setBets(prevBets => ({ ...prevBets, black: [...prevBets.black, bet] }));
+            setUserBets({ bet: [...userBets.bet, bet], user: [...userBets.user, username], color: [...userBets.color, color] });
+            console.log(userBets);
           }
         }
         else {

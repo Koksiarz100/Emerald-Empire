@@ -19,7 +19,7 @@ const BalanceContext = createContext<BalanceContextType>({
 const useBalanceContext = () => useContext(BalanceContext);
 
 function BalanceProvider({ children }: { children: ReactNode }) {
-  const [saldo, setSaldo] = useState(0);
+  const [saldo, setSaldo] = useState(1000);
   const [username, setUsername] = useState('');
 
   useEffect(() => {

@@ -12,7 +12,7 @@ import Balance from '@/components/balance/Balance';
 
 export default function Roulette() {
   // Contexty do obsługi ruletki
-  const { backgroundPosition, bets, rouletteTimer, isSpinning, setIsSpinning, position, setBet } = useRoulette() as RouletteContextType;
+  const { backgroundPosition, rouletteTimer, isSpinning, setIsSpinning, position, setBet, userBets } = useRoulette() as RouletteContextType;
   const { saldo, setSaldo, setUsername } = useBalanceContext() as BalanceContextType;
   const [selectedColor, setSelectedColor] = useState<string>("red");
   const colorOptions = [
@@ -84,7 +84,7 @@ export default function Roulette() {
             ))}
           </div>
         </div>
-        <RouletteInfo bets={bets} />
+        <RouletteInfo bets={userBets} />
         <div className='dev-buttons' style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px'}}> {/* DEV, trzeba usunąć! */}
           <span>DEV</span>
           <button onClick={() => setSaldo(saldo + 1000)}>Dodaj 1000</button>
