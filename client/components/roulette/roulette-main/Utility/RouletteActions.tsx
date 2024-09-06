@@ -124,15 +124,12 @@ export function useTakeBet(color: string) { // Przyjmowanie zakładu
           if (color === 'red') {
             setSaldo(saldo - bet);
             setUserBets({ bet: [...userBets.bet, bet], user: [...userBets.user, username], color: [...userBets.color, color] });
-            console.log(userBets);
           } else if (color === 'green') {
             setSaldo(saldo - bet);
             setUserBets({ bet: [...userBets.bet, bet], user: [...userBets.user, username], color: [...userBets.color, color] });
-            console.log(userBets);
           } else if (color === 'black') {
             setSaldo(saldo - bet);
             setUserBets({ bet: [...userBets.bet, bet], user: [...userBets.user, username], color: [...userBets.color, color] });
-            console.log(userBets);
           }
         }
         else {
