@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+const { Server } = require("socket.io");
+
 const app = express();
 const PORT = 8080;
 const SECRET_KEY = 'n5Xy6bMN%rq%*57^Slq4';
@@ -11,6 +13,23 @@ app.use(bodyParser.json());
 app.use(cors({
   origin: 'http://localhost:3000'
 }));
+
+const io = new Server(4000, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true
+  }
+});
+
+io.on("connection", (socket) => {
+  console.log("a user connected");
+  
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
 
 function verifyToken(req, res, next) {
   let token = req.headers['authorization'];
