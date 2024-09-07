@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = 'n5Xy6bMN%rq%*57^Slq4';
 
-function verifyToken(req, res, next) {
+function verifyToken(req, res, next) { // Login middleware
   let token = req.headers['authorization'];
   if (!token) return res.status(403).send({ message: 'No token provided.' });
 

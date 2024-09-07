@@ -12,8 +12,8 @@ app.use(cors({
   origin: 'http://localhost:3000'
 }));
 
-routes(app);
-configureSocket();
+routes(app); // Zainicjalizowanie routów
+configureSocket(); // Zainicjalizowanie socket.io
 
 const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
