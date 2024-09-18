@@ -13,10 +13,15 @@ function configureSocket() { // Socket.io configuration
   io.on("connection", (socket) => {
     console.log("A user connected!");
 
+    socket.on("message", (message, callback) => {
+      console.log("Message received: ", message);
+      callback("got it");
+    });
+
     socket.on("disconnect", () => {
       console.log("user disconnected");
     });
   });
-}
+};
 
 module.exports = { configureSocket };
