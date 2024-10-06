@@ -1,4 +1,6 @@
 const { verifyToken } = require('../middlewares');
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = 'n5Xy6bMN%rq%*57^Slq4';
 
 module.exports = (app) => {
   app.post('/login', (req, res) => {
