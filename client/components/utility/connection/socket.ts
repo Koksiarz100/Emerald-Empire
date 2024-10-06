@@ -1,14 +1,16 @@
 import { io } from "socket.io-client";
 
 const socket = io("http://localhost:4000", {
-  reconnection: false,
-  reconnectionDelayMax: 10000,
+  query: {
+    clientId: "1"
+  },
   auth: {
     token: "123"
-  },
-  query: {
-    "my-key": "my-value"
   }
+});
+
+socket.on("connect_error", (error) => {
+  console.error("Connection error:", error);
 });
 
 socket.on("connect", () => {

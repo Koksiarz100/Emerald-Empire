@@ -23,12 +23,12 @@ export default function Home() {
 
   return (
     <main>
-      <button onClick={() => sendSocketMessage("Hello from client!")}>Send message to server</button>
       <BalanceProvider>
         <RouletteProvider>
           <Roulette />
         </RouletteProvider>
       </BalanceProvider>
+      <button onClick={() => sendSocketMessage("Hello from client!")}>Send message to server</button>
     </main>
   );
 }
