@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+
+import { UserProvider } from "@/components/utility/auth/Auth";
 import Nav from "@/components/layout/Nav";
 
 import "./styles/globals.scss";
@@ -20,8 +22,10 @@ export default function RootLayout({
   return (
     <html lang="pl">
       <body className={inter.className}>
-        <Nav />
-        {children}
+        <UserProvider>
+          <Nav />
+          {children}
+        </UserProvider>
       </body>
     </html>
   );

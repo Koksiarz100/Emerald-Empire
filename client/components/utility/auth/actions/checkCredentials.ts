@@ -1,6 +1,6 @@
 'use client'
 
-export default async function checkCredentials() : Promise<string | null> {
+export default function checkCredentials() : string | null {
   const getUsername = localStorage.getItem('username');
 
   if(getUsername) {

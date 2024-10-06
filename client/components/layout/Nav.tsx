@@ -2,28 +2,13 @@
 
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useUser } from "@/components/utility/auth/Auth"
 
 import './layout.scss'
 
-import checkCredentials from "../utility/auth/actions/checkCredentials"
-
 export default function Nav() {
-  const [ username, setUsername ] = useState<string>('');
-
-  const router = useRouter();
-
-  useEffect(() => {
-    async function fetchUsername() {
-      const username = await checkCredentials();
-      if (username) {
-        setUsername(username);
-      }
-    }
+  const { username } = useUser();
   
-    fetchUsername();
-  }, []);
-
   return (
     <nav>
       Emerald Empire
