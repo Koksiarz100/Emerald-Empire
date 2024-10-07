@@ -24,3 +24,6 @@ jobs:
 
     - name: Run tests
       run: cd client && npm test
+
+    - name: Debug info
+      run: echo "Running on pull request: ${{ github.event_name == 'pull_request' }}"
