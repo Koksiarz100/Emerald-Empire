@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useBalanceContext } from './BalanceContext';
 
-export default function Balance() {
+export default function Balance() { // Balance
   const { saldo, username } = useBalanceContext();
 
   return (

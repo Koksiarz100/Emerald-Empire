@@ -6,9 +6,9 @@ import { sendSocketMessage } from "@/components/utility/connection/socket";
 
 import "./styles/styles.scss";
 
-import { RouletteProvider } from "@/components/roulette/roulette-main/utility/RouletteHooks";
+import { RouletteProvider } from "@/components/roulette/utility/RouletteHooks";
 import { BalanceProvider } from "@/components/balance/BalanceContext";
-import Roulette from "@/components/roulette/roulette-main/Roulette";
+import Roulette from "@/components/roulette/Roulette";
 
 import { checkToken } from "@/components/utility/auth/actions/checkToken";
 

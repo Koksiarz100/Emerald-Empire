@@ -24,7 +24,7 @@ function BalanceProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     async function fetchUsername() {
-      const username = await checkCredentials();
+      const username = checkCredentials();
       if (username) {
         setUsername(username);
       }

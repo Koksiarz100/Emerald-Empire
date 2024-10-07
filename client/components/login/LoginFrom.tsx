@@ -26,7 +26,7 @@ export default function LoginFrom() {
       console.log('Token saved:', credentials.token);
       router.push('/');
     } else {
-      console.log('No token received');
+      throw new Error('No token received');
     }
   };
 

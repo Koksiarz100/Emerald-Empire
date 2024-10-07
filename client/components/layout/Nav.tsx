@@ -1,10 +1,9 @@
 'use client'
 
 import Link from "next/link"
-import { useState, useEffect } from "react"
 import { useUser } from "@/components/utility/auth/Auth"
 
-import './layout.scss'
+import '@/app/styles/layout.scss';
 
 export default function Nav() {
   const { username } = useUser();
