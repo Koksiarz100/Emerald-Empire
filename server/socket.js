@@ -2,14 +2,22 @@ const { Server } = require("socket.io");
 
 let connectedClients = [];
 
-function configureSocket() { // Socket.io configuration
-  const io = new Server(4000, {
-    cors: {
-      origin: "http://localhost:3000",
-      methods: ["GET", "POST"],
-      allowedHeaders: ["my-custom-header"],
-      credentials: true
+const configureSocket = (io) => {
+  io.use((socket, next) => {
+    const token = socket.handshake.query.token;
+    console.log("Authenticating socket with token:", token);
+
+    if (!token) {
+      console.log("No token provided, disconnecting socket.");
+      return next(new Error("Authentication error"));
     }
+
+    if (token !== "123") {
+      console.log("Invalid token, disconnecting socket.");
+      return next(new Error("Authentication error"));
+    }
+
+    next();
   });
 
   io.on("connection", (socket) => {
@@ -36,8 +44,8 @@ function configureSocket() { // Socket.io configuration
     connectedClients.push(clientId);
     console.log("A user connected!");
 
-    socket.on("disconnect", () => {
-      console.log("user disconnected");
+    socket.on("disconnect", (reason) => {
+      console.log("User disconnected:", reason);
       connectedClients = connectedClients.filter(id => id !== clientId);
     });
 
