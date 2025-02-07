@@ -1,9 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const routes = require('./routes/routes');
-const { configureSocket } = require('./socket');
 const { Server } = require("socket.io");
+
+const routes = require('./routes/routes');
+const { configureSocket } = require('./connection/socket');
 
 const app = express();
 const PORT = 8080;
@@ -15,9 +16,10 @@ app.use(cors({
 
 const io = new Server(4000, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"]
-  }
+  },
+  transports: ['websocket', 'polling']
 });
 
 configureSocket(io);

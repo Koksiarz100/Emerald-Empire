@@ -7,6 +7,8 @@ const socket = io('ws://localhost:4000', {
   }
 });
 
+
+// Error handling
 socket.on("connect_error", (error) => {
   console.error("Connection error:", error);
 });
@@ -23,6 +25,7 @@ socket.on("error", (error) => {
   console.error("Socket error:", error);
 });
 
+// Functions
 export function sendSocketMessage(message: string) {
   console.log("Sending message to server...");
 

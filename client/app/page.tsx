@@ -9,17 +9,26 @@ import "./styles/styles.scss";
 import { RouletteProvider } from "@/components/roulette/utility/RouletteHooks";
 import { BalanceProvider } from "@/components/balance/BalanceContext";
 import Roulette from "@/components/roulette/Roulette";
+import { useUser } from "@/components/utility/auth/Auth"
 
 import { checkToken } from "@/components/utility/auth/actions/checkToken";
 
 export default function Home() {
   const router = useRouter();
 
+  const { username } = useUser();
+
   useEffect(() => {
     console.log("Checking token...");
     checkToken();
     router.refresh()
   }, []);
+
+  useEffect(() => {
+    if (username.length === 0) {
+      router.push('/login');
+    }
+  } , [username]);
 
   return (
     <main>

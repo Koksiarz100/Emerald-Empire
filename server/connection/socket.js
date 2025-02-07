@@ -22,7 +22,7 @@ const configureSocket = (io) => {
 
   io.on("connection", (socket) => {
     const clientId = socket.handshake.query.clientId;
-    console.log("Client connected with ID:", clientId);
+    console.log("Client connecting with ID:", clientId);
 
     if (!clientId) {
       console.log("No clientId provided, disconnecting socket.");
